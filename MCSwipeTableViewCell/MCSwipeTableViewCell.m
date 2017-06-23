@@ -116,6 +116,8 @@ typedef NS_ENUM(NSUInteger, MCSwipeTableViewCellDirection) {
     
     _firstTrigger = kMCStop1;
     _secondTrigger = kMCStop2;
+
+    _firstTriggerPosition = -1;
     
     _damping = kMCDamping;
     _velocity = kMCVelocity;
@@ -539,11 +541,19 @@ typedef NS_ENUM(NSUInteger, MCSwipeTableViewCellDirection) {
     
     else {
         if (_direction == MCSwipeTableViewCellDirectionRight) {
-            position.x = [self offsetWithPercentage:(_firstTrigger / 2) relativeToWidth:CGRectGetWidth(self.bounds)];
+            if (_firstTriggerPosition >= 0) {
+                position.x = _firstTriggerPosition;
+            } else {
+                position.x = [self offsetWithPercentage:(_firstTrigger / 2) relativeToWidth:CGRectGetWidth(self.bounds)];
+            }
         }
         
         else if (_direction == MCSwipeTableViewCellDirectionLeft) {
-            position.x = CGRectGetWidth(self.bounds) - [self offsetWithPercentage:(_firstTrigger / 2) relativeToWidth:CGRectGetWidth(self.bounds)];
+            if (_firstTriggerPosition > 0) {
+                position.x = CGRectGetWidth(self.bounds) - _firstTriggerPosition;
+            } else {
+                position.x = CGRectGetWidth(self.bounds) - [self offsetWithPercentage:(_firstTrigger / 2) relativeToWidth:CGRectGetWidth(self.bounds)];
+            }
         }
         
         else {

@@ -9,7 +9,7 @@
 #import "MCSwipeTableViewCell.h"
 #import "MCTableViewController.h"
 
-static NSUInteger const kMCNumItems = 7;
+static NSUInteger const kMCNumItems = 8;
 
 @interface MCTableViewController () <MCSwipeTableViewCellDelegate, UIAlertViewDelegate>
 
@@ -193,6 +193,25 @@ static NSUInteger const kMCNumItems = 7;
     }
     
     else if (indexPath.row % kMCNumItems == 6) {
+        [cell.textLabel setText:@"Small triggers with fixed leading position"];
+        [cell.detailTextLabel setText:@"Using 10% and 50%"];
+        cell.firstTrigger = 0.3;
+        cell.secondTrigger = 0.5;
+        cell.firstTriggerPosition = 12.0;
+        cell.shouldAnimateIcons = NO;
+
+        [cell setSwipeGestureWithView:checkView color:greenColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState1 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
+            NSLog(@"Did swipe \"Checkmark\" cell");
+        }];
+
+        [cell setSwipeGestureWithView:crossView color:redColor mode:MCSwipeTableViewCellModeExit state:MCSwipeTableViewCellState2 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
+            NSLog(@"Did swipe \"Cross\" cell");
+
+            [self deleteCell:cell];
+        }];
+    }
+
+    else if (indexPath.row % kMCNumItems == 7) {
         [cell.textLabel setText:@"Exit Mode Cell + Confirmation"];
         [cell.detailTextLabel setText:@"Swipe to delete"];
         
