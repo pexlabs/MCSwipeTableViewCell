@@ -368,7 +368,18 @@ typedef NS_ENUM(NSUInteger, MCSwipeTableViewCellDirection) {
 }
 
 - (CGFloat)percentageWithOffset:(CGFloat)offset relativeToWidth:(CGFloat)width {
-    CGFloat percentage = offset / width;
+    CGFloat percentage;
+    if (@available(iOS 11.0, *)) {
+        UIEdgeInsets insets = [UIApplication sharedApplication].keyWindow.safeAreaInsets;
+        if (offset < 0) {
+            offset -= insets.left;
+        } else {
+            offset += insets.left;
+        }
+        percentage = offset / (width - insets.left - insets.right);
+    } else {
+        percentage = offset / width;
+    }
     
     if (percentage < -1.0) percentage = -1.0;
     else if (percentage > 1.0) percentage = 1.0;
