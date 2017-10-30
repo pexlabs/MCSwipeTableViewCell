@@ -539,10 +539,11 @@ typedef NS_ENUM(NSUInteger, MCSwipeTableViewCellDirection) {
         }
     }
     
+    UIEdgeInsets insets = [UIApplication sharedApplication].keyWindow.safeAreaInsets;
     else {
         if (_direction == MCSwipeTableViewCellDirectionRight) {
             if (_firstTriggerPosition >= 0) {
-                position.x = _firstTriggerPosition;
+                position.x = _firstTriggerPosition + insets.left;
             } else {
                 position.x = [self offsetWithPercentage:(_firstTrigger / 2) relativeToWidth:CGRectGetWidth(self.bounds)];
             }
@@ -550,7 +551,7 @@ typedef NS_ENUM(NSUInteger, MCSwipeTableViewCellDirection) {
         
         else if (_direction == MCSwipeTableViewCellDirectionLeft) {
             if (_firstTriggerPosition > 0) {
-                position.x = CGRectGetWidth(self.bounds) - _firstTriggerPosition;
+                position.x = CGRectGetWidth(self.bounds) - _firstTriggerPosition - insets.right;
             } else {
                 position.x = CGRectGetWidth(self.bounds) - [self offsetWithPercentage:(_firstTrigger / 2) relativeToWidth:CGRectGetWidth(self.bounds)];
             }
